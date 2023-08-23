@@ -1,27 +1,32 @@
 const net = require('net');
+const port = 9001;
+const host = '35.200.212.65';
 
-// Create a TCP server
-const server = net.createServer(socket => {
-    console.log('Device connected:', socket.remoteAddress, socket.remotePort);
-
-    // Set up event listeners for socket
-    socket.on('data', data => {
-        console.log('Received data:', data.toString());
-        // Process the data from the IoT device as needed
-    });
-
-    socket.on('end', () => {
-        console.log('Device disconnected:', socket.remoteAddress, socket.remotePort);
-    });
-
-    socket.on('error', err => {
-        console.error('Socket error:', err);
-    });
+const server = net.createServer();
+server.listen(port, host, () => {
+    console.log('TCP Server is running on port ' + port + '.');
 });
 
-const PORT = 9001; // You can change this to your desired port number
+let sockets = [];
 
-// Start the server and listen on the specified port
-server.listen(PORT, () => {
-    console.log('Server listening on port', PORT);
+server.on('connection', function(sock) {
+    console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
+    sockets.push(sock);
+
+    sock.on('data', function(data) {
+        console.log('DATA ' + sock.remoteAddress + ': ' + data);
+        // Write the data back to all the connected, the client will receive it as data from the server
+        sockets.forEach(function(sock, index, array) {
+            sock.write(sock.remoteAddress + ':' + sock.remotePort + " said " + data + '\n');
+        });
+    });
+
+    // Add a 'close' event handler to this instance of socket
+    sock.on('close', function(data) {
+        let index = sockets.findIndex(function(o) {
+            return o.remoteAddress === sock.remoteAddress && o.remotePort === sock.remotePort;
+        })
+        if (index !== -1) sockets.splice(index, 1);
+        console.log('CLOSED: ' + sock.remoteAddress + ' ' + sock.remotePort);
+    });
 });
