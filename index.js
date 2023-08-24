@@ -26,6 +26,9 @@ const server = net.createServer(socket => {
         if (matches) {
             const iotId = parseInt(matches[1], 10);
             console.log(`Received IoT ID: ${iotId}`);
+
+            socket.write('CHARGERON');
+            updateIOTStatus(iotId)
         }
     }else if(input.includes("TEMP")){
 
@@ -47,13 +50,6 @@ const server = net.createServer(socket => {
             console.log("Invalid meter data format");
         }
      }
-    
-     setInterval(async () => {
-        socket.write('CHARGERON');
-        console.log(iotId);
-        await updateIOTStatus(iotId)
-     }, 1000);
-
   });
 
   socket.on('end', () => {
