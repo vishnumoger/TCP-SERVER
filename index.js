@@ -87,7 +87,7 @@ async function updateIOTStatus(iotId) {
         )
     }
 
-    console.log(`OIT Status data from IoT ${iotId} saved to database`);
+    console.log(`IoT Status data from IoT ${iotId} saved to database`);
   } catch (err) {
     console.error(`Error saving data: ${err.message}`);
   } finally {
