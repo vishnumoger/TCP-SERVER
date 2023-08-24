@@ -22,7 +22,8 @@ const server = net.createServer(socket => {
     console.log(input);
 
     if (input.includes("IOTID")) {
-        const matches = input.split(":");
+        const iotidPattern = /IOTID:(\d{5})/;
+        const matches = input.match(iotidPattern);
         if (matches) {
             const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
@@ -33,7 +34,7 @@ const server = net.createServer(socket => {
     }else if(input.includes("TEMP")){
 
         const temperaturePattern = /TEMP:(\d+\.\d+)/;
-        const matches = inputString.match(temperaturePattern);
+        const matches = input.match(temperaturePattern);
         if (matches) {
             const temperature = parseFloat(matches[1]);
             console.log(`Temperature data: ${temperature}`);
@@ -42,7 +43,7 @@ const server = net.createServer(socket => {
         }
      }else if(input.includes("METER")){
         const meterPattern = /METER:(\d+\.\d+)/;
-        const matches = inputString.match(meterPattern);
+        const matches = input.match(meterPattern);
         if (matches) {
             const meter = parseFloat(matches[1]);
             console.log(`meter data: ${meter}`);
