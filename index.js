@@ -28,8 +28,8 @@ const server = net.createServer(socket => {
             const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
 
-            socket.write('CHARGERON');
-            updateIOTStatus(iotId)
+            socket.write('CHARGERON: 25');
+            //updateIOTStatus(iotId)
         }
     }else if(input.includes("TEMP")){
 
