@@ -12,7 +12,7 @@ const server = net.createServer(socket => {
 
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
 
-  socket.write('REQ_IoTID');
+  socket.write('REQ_IoTID:');
 
   let iotId;
 
@@ -21,11 +21,10 @@ const server = net.createServer(socket => {
     const input = data.toString().trim();
     console.log(input);
 
-    if (input.includes("IoTID")) {
-        const iotidPattern = /IoTID:(\d{5})/;
-        const matches = inputString.match(iotidPattern);
+    if (input.includes("IOTID")) {
+        const matches = input.split(":");
         if (matches) {
-            const iotId = parseInt(matches[1], 10);
+            const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
 
             socket.write('CHARGERON');
