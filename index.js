@@ -50,6 +50,7 @@ const server = net.createServer(socket => {
     
      setInterval(async () => {
         socket.write('CHARGERON');
+        console.log(iotId);
         await updateIOTStatus(iotId)
      }, 1000);
 
@@ -75,8 +76,9 @@ async function updateIOTStatus(iotId) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('iot');
-
+    console.log(iotId);
     const getIotStatus = await collection.findOne({iotId:iotId})
+    console.log(getIotStatus);
     if(getIotStatus.chargerStatus == true) {
         await collection.updateOne(
             {iotId:iotId}, {$set:{chargerStatus: false}}
