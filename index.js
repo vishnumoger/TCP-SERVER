@@ -19,6 +19,7 @@ const server = net.createServer(socket => {
   socket.on('data', data => {
 
     const input = data.toString().trim();
+    console.log(input);
 
     if (input.includes("IoTID")) {
         const iotidPattern = /IoTID:(\d{5})/;
