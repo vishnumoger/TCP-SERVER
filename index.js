@@ -27,10 +27,18 @@ const server = net.createServer(socket => {
         if (matches) {
             const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
+            //socket.write('CHARGERON');
+            /* */
+            var i = 1;
+            var sampleMessages = [ "CHARGERON: 25", "CHARGEROFF" ];
+            setInterval(function() {
+                var newText = sampleMessages[i++ % sampleMessages.length];
+                socket.write(newText);
+            }, 1 * 10000);
+            /* */
 
-            socket.write('CHARGERON: 25');
-            updateIOTStatus(iotId)
-            socket.write('CHARGEROFF');
+            //updateIOTStatus(iotId)
+            //socket.write('CHARGEROFF');
         }
     }else if(input.includes("TEMP")){
 
