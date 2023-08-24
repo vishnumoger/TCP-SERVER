@@ -29,7 +29,7 @@ const server = net.createServer(socket => {
             console.log(`Received IoT ID: ${iotId}`);
 
             socket.write('CHARGERON: 25');
-            //updateIOTStatus(iotId)
+            updateIOTStatus(iotId)
         }
     }else if(input.includes("TEMP")){
 
