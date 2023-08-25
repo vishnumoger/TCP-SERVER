@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
                 socket.write('CHARGERON');
             })
         })
-        res.send("CHRGE ON")
+        res.send("CHARGE ON")
     } catch (error) {
       sendError(res, error.message);
     }
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
                 socket.write('CHARGEOFF');
             })
         })
-        res.send("CHRGE OFF")
+        res.send("CHARGE OFF")
     } catch (error) {
       sendError(res, error.message);
     }
