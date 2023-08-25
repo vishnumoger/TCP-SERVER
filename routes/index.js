@@ -9,6 +9,7 @@ router.get('/', async (req, res) => {
   // start changing
   router.get('/startCharging/CHARGEON', async (req, res, next) => {
     try {
+        console.log('CHARGEON')
         const server = net.createServer(socket => {
 
             const remoteAddress = socket.remoteAddress;
@@ -20,6 +21,7 @@ router.get('/', async (req, res) => {
                 socket.write('CHARGERON');
             })
         })
+        console.log(server)
         res.send("CHARGE ON")
     } catch (error) {
       sendError(res, error.message);
@@ -28,6 +30,7 @@ router.get('/', async (req, res) => {
 
   router.get('/startCharging/CHARGEOFF', async (req, res, next) => {
     try {
+        console.log('CHARGEOFF')
         const server = net.createServer(socket => {
 
             const remoteAddress = socket.remoteAddress;
@@ -39,6 +42,7 @@ router.get('/', async (req, res) => {
                 socket.write('CHARGEOFF');
             })
         })
+        console.log(server)
         res.send("CHARGE OFF")
     } catch (error) {
       sendError(res, error.message);

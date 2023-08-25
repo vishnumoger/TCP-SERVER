@@ -2,10 +2,10 @@
   "name": "tcp",
   "version": "1.0.0",
   "description": "tcp server",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node api.js"
   },
   "author": "",
   "license": "ISC",
