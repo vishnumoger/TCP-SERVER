@@ -27,7 +27,7 @@ const server = net.createServer(socket => {
         if (matches) {
             const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
-            //socket.write('CHARGERON');
+            //socket.write('CHARGERON: 25');
             /* */
             var i = 1;
             var sampleMessages = [ "CHARGERON: 25", "CHARGEROFF" ];
