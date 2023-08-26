@@ -1,5 +1,7 @@
 const net = require('net');
 const MongoClient = require('mongodb').MongoClient;
+const express = require('express');
+const router = express.Router();
 
 // Replace with your MongoDB connection string
 const mongoUrl = 'mongodb+srv://narayanarajugv:jZ5hzXiTWzUhq3bc@cluster0.bt2cg2j.mongodb.net';
@@ -11,6 +13,26 @@ const server = net.createServer(socket => {
   const remotePort = socket.remotePort
 
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
+
+  router.get('/startCharging/CHARGEON', async (req, res, next) => {
+    try {
+        console.log('CHARGEON')
+        socket.write('CHARGERON');
+        res.send("CHARGE ON")
+    } catch (error) {
+      sendError(res, error.message);
+    }
+  });
+
+  router.get('/startCharging/CHARGEOFF', async (req, res, next) => {
+    try {
+        console.log('CHARGEOFF')
+        socket.write('CHARGEROFF');
+        res.send("CHARGE OFF")
+    } catch (error) {
+      sendError(res, error.message);
+    }
+  });
 
   socket.write('REQ_IoTID:');
 
@@ -27,18 +49,6 @@ const server = net.createServer(socket => {
         if (matches) {
             const iotId = parseInt(matches[1]);
             console.log(`Received IoT ID: ${iotId}`);
-            //socket.write('CHARGERON: 25');
-            /* */
-            var i = 1;
-            var sampleMessages = [ "CHARGERON: 25", "CHARGEROFF" ];
-            setInterval(function() {
-                var newText = sampleMessages[i++ % sampleMessages.length];
-                socket.write(newText);
-            }, 1 * 10000);
-            /* */
-
-            //updateIOTStatus(iotId)
-            //socket.write('CHARGEROFF');
         }
     }else if(input.includes("TEMP")){
 
@@ -70,16 +80,6 @@ const server = net.createServer(socket => {
     console.log(`Error with IoT device ${iotId}: ${err.message}`);
   });
 });
-
-const cors = require('cors');
-const express = require('express');
-
-const app = express();
-app.use(cors())
-app.use(express.json());
-
-const routes = require('./routes/index');
-app.use('/api', routes)
 
 server.listen(9001, () => {
   console.log('TCP server is listening on port 9001');
