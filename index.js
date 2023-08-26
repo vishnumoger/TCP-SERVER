@@ -6,6 +6,7 @@ const router = express.Router();
 // Replace with your MongoDB connection string
 const mongoUrl = 'mongodb+srv://narayanarajugv:jZ5hzXiTWzUhq3bc@cluster0.bt2cg2j.mongodb.net';
 const dbName = 'GMR';
+let Status = false;
 
 const server = net.createServer(socket => {
 
@@ -14,10 +15,18 @@ const server = net.createServer(socket => {
 
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
 
+    setInterval(function() {
+      if (Status) {
+        socket.write('CHARGERON');
+      } else {
+        socket.write('CHARGEROFF');
+      }
+    }, 1 * 1000);
+
   router.get('/startCharging/CHARGEON', async (req, res, next) => {
     try {
         console.log('CHARGEON')
-        socket.write('CHARGERON');
+        Status = true;
         res.send("CHARGE ON")
     } catch (error) {
       sendError(res, error.message);
@@ -27,7 +36,7 @@ const server = net.createServer(socket => {
   router.get('/startCharging/CHARGEOFF', async (req, res, next) => {
     try {
         console.log('CHARGEOFF')
-        socket.write('CHARGEROFF');
+        Status = false;
         res.send("CHARGE OFF")
     } catch (error) {
       sendError(res, error.message);
