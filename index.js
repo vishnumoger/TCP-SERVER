@@ -18,8 +18,10 @@ const server = net.createServer(socket => {
     setInterval(function() {
       console.log(Status)
       if (Status) {
+        console.log('CHARGERON')
         socket.write('CHARGERON');
       } else {
+        console.log('CHARGEROFF')
         socket.write('CHARGEROFF');
       }
     }, 1 * 1000);
