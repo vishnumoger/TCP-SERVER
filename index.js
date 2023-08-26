@@ -16,6 +16,7 @@ const server = net.createServer(socket => {
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
 
     setInterval(function() {
+      console.log(Status)
       if (Status) {
         socket.write('CHARGERON');
       } else {
