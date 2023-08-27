@@ -19,10 +19,10 @@ const server = net.createServer(socket => {
       console.log(Status)
       if (Status) {
         console.log('CHARGERON')
-        socket.write('CHARGERON');
+        socket.write('CHARGERON ');
       } else {
         console.log('CHARGEROFF')
-        socket.write('CHARGEROFF');
+        socket.write('CHARGEROFF ');
       }
     }, 1 * 3000);
 
