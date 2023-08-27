@@ -24,7 +24,7 @@ const server = net.createServer(socket => {
         console.log('CHARGEROFF')
         socket.write('CHARGEROFF');
       }
-    }, 1 * 1000);
+    }, 1 * 3000);
 
 
   socket.write('REQ_IoTID:');
