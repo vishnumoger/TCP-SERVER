@@ -2,11 +2,22 @@ const net = require('net');
 const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 const router = express.Router();
-
-// Replace with your MongoDB connection string
-const mongoUrl = 'mongodb+srv://narayanarajugv:jZ5hzXiTWzUhq3bc@cluster0.bt2cg2j.mongodb.net';
-const dbName = 'GMR';
+const IoTModel = require('./models/iotdetailsmodel');
 let Status = false;
+
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://narayanarajugv:jZ5hzXiTWzUhq3bc@cluster0.bt2cg2j.mongodb.net/GMR', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  mongoose.connection.on('error', (err) => {
+    console.log('Mongoose connection error: ', err);
+  });
+  mongoose.connection.on('connected', () => {
+    console.log('Mongoose connected');
+  });
+
 
 const server = net.createServer(socket => {
 
@@ -34,7 +45,12 @@ const server = net.createServer(socket => {
   socket.on('data', data => {
 
     const input = data.toString().trim();
+    
     console.log(input);
+    console.log(remoteAddress);
+    console.log(remotePort);
+
+    const updateIOT = updateIOTStatus(input, remoteAddress, remotePort)
 
     if (input.includes("IOTID")) {
         const iotidPattern = /IOTID:(\d{5})/;
@@ -87,6 +103,7 @@ app.get('/api/startCharging/CHARGEON', async (req, res, next) => {
   console.log(1111)
   Status = true;
   console.log(Status)
+  //const updateIOT = updateIOTStatus(input, remoteAddress, remotePort)
   res.send("CHARGE ON")
 });
 
@@ -102,30 +119,23 @@ app.listen(9002, () => {
   console.log('API server is listening on port 9002')
 })
 
-async function updateIOTStatus(iotId) {
-  const client = new MongoClient(mongoUrl, { useUnifiedTopology: true });
+async function updateIOTStatus(input, remoteAddress, remotePort) {
+  console.log('call db')
 
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection('iot');
-    //console.log(iotId);
-    const getIotStatus = await collection.findOne({iotId:iotId})
-    //onsole.log(getIotStatus);
-    if(getIotStatus.chargerStatus == true) {
-        await collection.updateOne(
-            {iotId:iotId}, {$set:{chargerStatus: false}}
-        )
-    } else {
-        await collection.updateOne(
-            {iotId:iotId}, {$set:{chargerStatus: true}}
-        )
-    }
+  const data = new IoTModel({
+    data: input,
+    remoteAddress: remoteAddress,
+    remotePort: remotePort
+})
 
-    console.log(`IoT Status data from IoT ${iotId} saved to database`);
-  } catch (err) {
-    console.error(`Error saving data: ${err.message}`);
-  } finally {
-    client.close();
-  }
+console.log(data)
+try {
+    const dataToSave = await data.save();
+    console.log(dataToSave)
+    console.log('Success')
+}
+catch (error) {
+    console.log(error)
+}
+
 }
