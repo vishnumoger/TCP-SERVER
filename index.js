@@ -114,6 +114,17 @@ app.get('/api/startCharging/CHARGEOFF', async (req, res, next) => {
   res.send("CHARGE OFF")
 });
 
+app.get('/api/getIoTStatus', async (req, res, next) => {
+  
+  const iotStatus = await IoTModel.find().sort({_id: -1}).limit(1)
+  if (!iotStatus) {
+    return res.send(res, 'iotStatus not found', 404);
+  } else {
+    return res.send(iotStatus);
+  }
+
+});
+
 
 app.listen(9002, () => {
   console.log('API server is listening on port 9002')
