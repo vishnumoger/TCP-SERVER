@@ -13,6 +13,6 @@ const iotdetailsSchema = new mongoose.Schema({
         required: false,
         type: String
     }
-})
+}, { timestamps: true, versionKey: false })
 
 module.exports = mongoose.model('IOTDetails', iotdetailsSchema)

@@ -26,7 +26,7 @@ const server = net.createServer(socket => {
 
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
 
-    setInterval(function() {
+    /*setInterval(function() {
       console.log(Status)
       if (Status) {
         console.log('CHARGERON')
@@ -35,7 +35,7 @@ const server = net.createServer(socket => {
         console.log('CHARGEROFF')
         socket.write('CHARGEROFF ');
       }
-    }, 1 * 3000);
+    }, 1 * 3000);*/
 
 
   socket.write('REQ_IoTID:');
@@ -120,7 +120,23 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
   if (!iotStatus) {
     return res.send(res, 'iotStatus not found', 404);
   } else {
-    return res.send(iotStatus);
+    //return res.send(iotStatus);
+    console.log(iotStatus)
+    const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
+    const split_string = withoutFirstAndLast.split(",");
+    console.log(split_string)
+
+    return res.send(
+      { 
+          "statusCode": 200,
+          "_id": iotStatus[0]._id,
+          "data": split_string,
+          "remoteAddress": iotStatus[0].remoteAddress,
+          "remotePort": iotStatus[0].remotePort,
+          "createdAt": iotStatus[0].createdAt,
+          "updatedAt": iotStatus[0].updatedAt
+      }
+    )
   }
 
 });
