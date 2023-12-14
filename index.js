@@ -26,7 +26,7 @@ const server = net.createServer(socket => {
 
   console.log(`IoT device connected: ${remoteAddress}:${remotePort}`);
 
-    /*setInterval(function() {
+    setInterval(function() {
       console.log(Status)
       if (Status) {
         console.log('CHARGERON')
@@ -35,7 +35,7 @@ const server = net.createServer(socket => {
         console.log('CHARGEROFF')
         socket.write('CHARGEROFF ');
       }
-    }, 1 * 3000);*/
+    }, 1 * 3000);
 
 
   socket.write('REQ_IoTID:');
@@ -44,7 +44,7 @@ const server = net.createServer(socket => {
 
   socket.on('data', data => {
 
-    const input = data.toString().trim();
+    //const input = '{0,0,0,0,0,0,0,0,100,100,100,100,0,0,0,0,0,0,0,0,24177,24170,24181,24180,0,0,0,0,660,2331,1,0,4991,0}';//data.toString().trim();
     
     console.log(input);
     console.log(remoteAddress);
@@ -103,7 +103,9 @@ app.get('/api/startCharging/CHARGEON', async (req, res, next) => {
   console.log(1111)
   Status = true;
   console.log(Status)
-  //const updateIOT = updateIOTStatus(input, remoteAddress, remotePort)
+  //const input = '{0,0,0,0,0,0,0,0,2,0,81,0,123,144,27,26,99,0,1,0,0,0,0}';//data.toString().trim();
+    
+  //const updateIOT = updateIOTStatus(input)
   res.send("CHARGE ON")
 });
 
@@ -116,17 +118,17 @@ app.get('/api/startCharging/CHARGEOFF', async (req, res, next) => {
 
 app.get('/api/getIoTStatus', async (req, res, next) => {
   
-  const iotStatus = await IoTModel.find().sort({_id: -1}).limit(1)
+  const iotStatus = await IoTModel.find().sort({_id: -1}).limit(2)
   if (!iotStatus) {
     return res.send(res, 'iotStatus not found', 404);
   } else {
-    //return res.send(iotStatus);
-    console.log(iotStatus)
+    return res.send(iotStatus);
+    /*console.log(iotStatus)
     const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
-    console.log(split_string)
+    console.log(split_string)*/
 
-    return res.send(
+    /*return res.send(
       { 
           "statusCode": 200,
           "_id": iotStatus[0]._id,
@@ -136,7 +138,7 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
           "createdAt": iotStatus[0].createdAt,
           "updatedAt": iotStatus[0].updatedAt
       }
-    )
+    )*/
   }
 
 });
@@ -146,20 +148,35 @@ app.listen(9002, () => {
   console.log('API server is listening on port 9002')
 })
 
-async function updateIOTStatus(input, remoteAddress, remotePort) {
+async function updateIOTStatus(input) {
   console.log('call db')
+  console.log(input)
 
-  const data = new IoTModel({
-    data: input,
-    remoteAddress: remoteAddress,
-    remotePort: remotePort
-})
+  const withoutFirstAndLast = input.slice(1, -1);
+  const split_string = withoutFirstAndLast.split(",");
+  console.log(split_string)
 
-console.log(data)
+  const iotDataCount = split_string.length;
+  console.log(iotDataCount);
+
 try {
-    const dataToSave = await data.save();
-    console.log(dataToSave)
-    console.log('Success')
+  
+  if(iotDataCount == 23 || iotDataCount == 34) {
+
+      const data = new IoTModel({
+        data: input,
+        remoteAddress: remoteAddress,
+        remotePort: remotePort
+    })
+    
+    console.log(data)
+
+      const dataToSave = await data.save();
+      console.log(dataToSave)
+      console.log('Success')
+  } else {
+    console.log('Fault Data')
+  }
 }
 catch (error) {
     console.log(error)
