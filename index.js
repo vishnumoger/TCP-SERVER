@@ -165,17 +165,19 @@ async function updateIOTStatus(input) {
   if(input == 'IOTID:1') {
     iotDataCount = 0;
   } else {
-    const withoutFirstAndLast = input.slice(1, -1);
-    console.log(`without First And Last->${withoutFirstAndLast}`)
-    const split_string = withoutFirstAndLast.split(",");
-    console.log(`after split->${split_string}`)
-    const iotDataCount = split_string.length;
-    console.log(`iot Data Count->${iotDataCount}`)
+    //const withoutFirstAndLast = input.slice(1, -1);
+    //console.log(`without First And Last->${withoutFirstAndLast}`)
+    //const split_string = withoutFirstAndLast.split(",");
+    //console.log(`after split->${split_string}`)
+    //const iotDataCount = split_string.length;
+    //console.log(`iot Data Count->${iotDataCount}`)
+    iotDataCount = 1;
   }
 
 try {
   
-  if(iotDataCount == 23 || iotDataCount == 34) {
+  //if(iotDataCount == 23 || iotDataCount == 34) {
+    if(iotDataCount == 1) {
 
       const data = new IoTModel({
         data: input,
