@@ -159,7 +159,7 @@ app.listen(9002, () => {
   console.log('API server is listening on port 9002')
 })
 
-async function updateIOTStatus(input) {
+async function updateIOTStatus(input, remoteAddress, remotePort) {
   console.log('call db')
 
   if(input == 'IOTID:1') {
