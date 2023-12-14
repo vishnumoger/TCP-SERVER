@@ -124,8 +124,12 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
     return res.send(res, 'iotStatus not found', 404);
   } else {
     //return res.send(iotStatus);
+    console.log('count->')
+    console.log(iotStatus)
+    console.log(iotStatus.length);
+
     const dataArray = []
-    for(i=1; i>0; i--) {
+    for(i=0; i<2; i++) {
       const withoutFirstAndLast = iotStatus[i].data.slice(1, -1);
       const split_string = withoutFirstAndLast.split(",");
       dataArray.push(split_string)
