@@ -122,23 +122,29 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
   if (!iotStatus) {
     return res.send(res, 'iotStatus not found', 404);
   } else {
-    return res.send(iotStatus);
-    /*console.log(iotStatus)
-    const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
+    //return res.send(iotStatus);
+    const dataArray = []
+    for(i=1; i>0; i--) {
+      const withoutFirstAndLast = iotStatus[i].data.slice(1, -1);
+      const split_string = withoutFirstAndLast.split(",");
+      dataArray.push(split_string)
+    }
+    console.log(dataArray)
+    /*const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
     console.log(split_string)*/
 
-    /*return res.send(
+    return res.send(
       { 
           "statusCode": 200,
           "_id": iotStatus[0]._id,
-          "data": split_string,
+          "data": dataArray,
           "remoteAddress": iotStatus[0].remoteAddress,
           "remotePort": iotStatus[0].remotePort,
           "createdAt": iotStatus[0].createdAt,
           "updatedAt": iotStatus[0].updatedAt
       }
-    )*/
+    )
   }
 
 });
@@ -170,7 +176,7 @@ try {
     })
     
     console.log(data)
-
+    
       const dataToSave = await data.save();
       console.log(dataToSave)
       console.log('Success')
