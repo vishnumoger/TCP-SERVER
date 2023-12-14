@@ -135,6 +135,8 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
       dataArray.push(split_string)
     }
     console.log(dataArray)
+    const mergeResult = [...dataArray[1], ...dataArray[0]];
+    console.log(mergeResult)
     /*const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
     console.log(split_string)*/
@@ -143,7 +145,7 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
       { 
           "statusCode": 200,
           "_id": iotStatus[0]._id,
-          "data": dataArray,
+          "data": mergeResult,
           "remoteAddress": iotStatus[0].remoteAddress,
           "remotePort": iotStatus[0].remotePort,
           "createdAt": iotStatus[0].createdAt,
