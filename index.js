@@ -165,12 +165,16 @@ async function updateIOTStatus(input) {
   console.log('call db')
   console.log(input)
 
-  const withoutFirstAndLast = input.slice(1, -1);
-  const split_string = withoutFirstAndLast.split(",");
-  console.log(split_string)
+  if(input == 'IOTID:1') {
+    iotDataCount = 0;
+  } else {
+    const withoutFirstAndLast = input.slice(1, -1);
+    const split_string = withoutFirstAndLast.split(",");
+    console.log(split_string)
 
-  const iotDataCount = split_string.length;
-  console.log(iotDataCount);
+    const iotDataCount = split_string.length;
+    console.log(iotDataCount);
+  }
 
 try {
   
@@ -188,7 +192,7 @@ try {
       console.log(dataToSave)
       console.log('Success')
   } else {
-    console.log('Fault Data')
+    console.log(input)
   }
 }
 catch (error) {
