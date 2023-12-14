@@ -44,13 +44,14 @@ const server = net.createServer(socket => {
 
   socket.on('data', data => {
 
-    //const input = '{0,0,0,0,0,0,0,0,100,100,100,100,0,0,0,0,0,0,0,0,24177,24170,24181,24180,0,0,0,0,660,2331,1,0,4991,0}';//data.toString().trim();
+    const input = data.toString().trim();
+    console.log(input);
     
     console.log(input);
     console.log(remoteAddress);
     console.log(remotePort);
 
-    const updateIOT = updateIOTStatus(input, remoteAddress, remotePort)
+    const updateIOT = updateIOTStatus(data, remoteAddress, remotePort)
 
     if (input.includes("IOTID")) {
         const iotidPattern = /IOTID:(\d{5})/;
