@@ -46,8 +46,6 @@ const server = net.createServer(socket => {
 
     const input = data.toString().trim();
     console.log(input);
-    
-    console.log(input);
     console.log(remoteAddress);
     console.log(remotePort);
 
@@ -163,17 +161,16 @@ app.listen(9002, () => {
 
 async function updateIOTStatus(input) {
   console.log('call db')
-  console.log(input)
 
   if(input == 'IOTID:1') {
     iotDataCount = 0;
   } else {
     const withoutFirstAndLast = input.slice(1, -1);
+    console.log(`without First And Last->${withoutFirstAndLast}`)
     const split_string = withoutFirstAndLast.split(",");
-    console.log(split_string)
-
+    console.log(`after split->${split_string}`)
     const iotDataCount = split_string.length;
-    console.log(iotDataCount);
+    console.log(`iot Data Count->${iotDataCount}`)
   }
 
 try {
