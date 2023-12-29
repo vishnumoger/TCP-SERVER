@@ -4,6 +4,10 @@ const express = require('express');
 const router = express.Router();
 const IoTModel = require('./models/iotdetailsmodel');
 let Status = false;
+const db = require('./dbconfig/index');
+const env = require('dotenv');
+
+env.config()
 
 const mongoose = require('mongoose');
 
@@ -48,6 +52,7 @@ const server = net.createServer(socket => {
     console.log(input);
     console.log(remoteAddress);
     console.log(remotePort);
+
 
     const updateIOT = updateIOTStatus(data, remoteAddress, remotePort)
 
@@ -102,7 +107,7 @@ app.get('/api/startCharging/CHARGEON', async (req, res, next) => {
   console.log(1111)
   Status = true;
   console.log(Status)
-  //const input = '{0,0,0,0,0,0,0,0,2,0,81,0,123,144,27,26,99,0,1,0,0,0,0}';//data.toString().trim();
+  //const input = '{0,0,0,0,0,0,0,0,100,100,100,100,0,0,0,0,0,0,0,0,23587,23583,23590,23588,0,0,0,0,710,2690,1,0,4996,0}';//data.toString().trim();
     
   //const updateIOT = updateIOTStatus(input)
   res.send("CHARGE ON")
@@ -143,6 +148,7 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
       { 
           "statusCode": 200,
           "_id": iotStatus[0]._id,
+          "IOTID": iotStatus[0].IOTID,
           "data": mergeResult,
           "remoteAddress": iotStatus[0].remoteAddress,
           "remotePort": iotStatus[0].remotePort,
@@ -162,6 +168,26 @@ app.listen(9002, () => {
 async function updateIOTStatus(input, remoteAddress, remotePort) {
   console.log('call db')
 
+  const IoTId = '1'
+  const dataArray = []
+  const dataset = input; //'{0,0,0,0,0,0,0,0,2,0,81,0,123,144,27,26,99,0,1,0,0,0,0}';
+  const withoutFirstAndLast = dataset.slice(1, -1);
+  console.log(withoutFirstAndLast);
+  const split_string = withoutFirstAndLast.split(",");
+  dataArray.push(split_string)
+
+  const last6 = dataArray[0].slice(-6);
+  console.log(last6);
+  const powerConsumed = last6[0];
+  console.log(powerConsumed);
+
+  const getCharger = await db.pool.query(`SELECT * from public."IoT" WHERE "IOTID"='${IoTId}'`)
+
+  const chargerId = getCharger.rows[0].chargerId;
+
+  const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
+    
+
   if(input == 'IOTID:1') {
     iotDataCount = 0;
   } else {
@@ -180,6 +206,7 @@ try {
     if(iotDataCount == 1) {
 
       const data = new IoTModel({
+        IOTID: '1',
         data: input,
         remoteAddress: remoteAddress,
         remotePort: remotePort

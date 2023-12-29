@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const iotdetailsSchema = new mongoose.Schema({
+    IOTID: {
+        required: true,
+        type: String
+    },
     data: {
         required: true,
         type: String
