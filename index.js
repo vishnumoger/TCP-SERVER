@@ -168,7 +168,7 @@ app.listen(9002, () => {
 async function updateIOTStatus(input, remoteAddress, remotePort) {
   console.log('call db')
 
-  const IoTId = '1'
+  /*const IoTId = '1'
   const dataArray = []
   const dataset = input; //'{0,0,0,0,0,0,0,0,2,0,81,0,123,144,27,26,99,0,1,0,0,0,0}';
   const withoutFirstAndLast = dataset.slice(1, -1);
@@ -186,7 +186,7 @@ async function updateIOTStatus(input, remoteAddress, remotePort) {
   const chargerId = getCharger.rows[0].chargerId;
 
   const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
-    
+  */
 
   if(input == 'IOTID:1') {
     iotDataCount = 0;
