@@ -210,7 +210,7 @@ try {
     const split_string = withoutFirstAndLast.split(",");
     const IoTID = split_string[0];
 
-    const last6 = split_string[0].slice(-6);
+    const last6 = split_string.slice(-6);
     console.log(last6);
     const powerConsumed = last6[0];
     console.log(`powerConsumed: ${powerConsumed}`)
