@@ -204,8 +204,8 @@ try {
   
   //if(iotDataCount == 23 || iotDataCount == 34) {
     /*if(iotDataCount == 1) {*/
-
-    const withoutFirstAndLast = input.slice(1, -1);
+    const dataNew = String(input);
+    const withoutFirstAndLast = dataNew.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
     const IoTID = split_string[0];
 
