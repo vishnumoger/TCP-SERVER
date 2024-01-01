@@ -209,6 +209,10 @@ try {
     const split_string = withoutFirstAndLast.split(",");
     const IoTID = split_string[0];
 
+    console.log(withoutFirstAndLast)
+    console.log(split_string)
+    console.log(IoTID)
+
       const data = new IoTModel({
         IOTID: IoTID,
         data: input,
