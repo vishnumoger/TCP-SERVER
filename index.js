@@ -127,9 +127,9 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
     return res.send(res, 'iotStatus not found', 404);
   } else {
     //return res.send(iotStatus);
-    console.log('count->')
-    console.log(iotStatus)
-    console.log(iotStatus.length);
+    //console.log('count->')
+    //console.log(iotStatus)
+    //console.log(iotStatus.length);
 
     const dataArray = []
     for(i=0; i<2; i++) {
@@ -137,9 +137,9 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
       const split_string = withoutFirstAndLast.split(",");
       dataArray.push(split_string)
     }
-    console.log(dataArray)
+    //console.log(dataArray)
     const mergeResult = [...dataArray[1], ...dataArray[0]];
-    console.log(mergeResult)
+    //console.log(mergeResult)
     /*const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
     console.log(split_string)*/
@@ -167,7 +167,8 @@ app.listen(9002, () => {
 
 async function updateIOTStatus(input, remoteAddress, remotePort) {
   console.log('call db')
-
+  console.log('input from IOT device:')
+  console.log(input)
   /*const IoTId = '1'
   const dataArray = []
   const dataset = input; //'{0,0,0,0,0,0,0,0,2,0,81,0,123,144,27,26,99,0,1,0,0,0,0}';
