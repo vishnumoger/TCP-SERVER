@@ -127,9 +127,9 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
     return res.send(res, 'iotStatus not found', 404);
   } else {
     //return res.send(iotStatus);
-    //console.log('count->')
+    console.log('count->')
     //console.log(iotStatus)
-    //console.log(iotStatus.length);
+    console.log(iotStatus.length);
 
     const dataArray = []
     for(i=0; i<2; i++) {
@@ -139,7 +139,7 @@ app.get('/api/getIoTStatus', async (req, res, next) => {
     }
     //console.log(dataArray)
     const mergeResult = [...dataArray[1], ...dataArray[0]];
-    //console.log(mergeResult)
+    console.log(mergeResult)
     /*const withoutFirstAndLast = iotStatus[0].data.slice(1, -1);
     const split_string = withoutFirstAndLast.split(",");
     console.log(split_string)*/
