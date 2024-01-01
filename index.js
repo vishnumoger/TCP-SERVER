@@ -210,6 +210,16 @@ try {
     const split_string = withoutFirstAndLast.split(",");
     const IoTID = split_string[0];
 
+    const last6 = split_string[0].slice(-6);
+    console.log(last6);
+    const powerConsumed = last6[0];
+    console.log(`powerConsumed: ${powerConsumed}`)
+    
+    const getCharger = await db.pool.query(`SELECT * from public."IoT" WHERE "IOTID"='${IoTID}'`)
+    const chargerId = getCharger.rows[0].chargerId;
+    console.log(`charger id: ${chargerId}`)
+    const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
+
     console.log(withoutFirstAndLast)
     console.log(split_string)
     console.log(IoTID)
