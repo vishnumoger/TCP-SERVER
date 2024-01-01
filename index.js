@@ -215,11 +215,13 @@ try {
     const powerConsumed = last6[0];
     console.log(`powerConsumed: ${powerConsumed}`)
     
-    const getCharger = await db.pool.query(`SELECT * from public."IoT" WHERE "IOTID"='${IoTID}'`)
-    const chargerId = getCharger.rows[0].chargerId;
-    console.log(`charger id: ${chargerId}`)
-    const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
-
+    if(powerConsumed > 0) {
+      const getCharger = await db.pool.query(`SELECT * from public."IoT" WHERE "IOTID"='${IoTID}'`)
+      const chargerId = getCharger.rows[0].chargerId;
+      console.log(`charger id: ${chargerId}`)
+      const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
+    }
+    
     console.log(withoutFirstAndLast)
     console.log(split_string)
     console.log(IoTID)
