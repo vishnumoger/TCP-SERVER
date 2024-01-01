@@ -56,7 +56,7 @@ const server = net.createServer(socket => {
 
     const updateIOT = updateIOTStatus(data, remoteAddress, remotePort)
 
-    if (input.includes("IOTID")) {
+    /*if (input.includes("IOTID")) {
         const iotidPattern = /IOTID:(\d{5})/;
         const matches = input.match(iotidPattern);
         if (matches) {
@@ -82,7 +82,7 @@ const server = net.createServer(socket => {
         }else{
             console.log("Invalid meter data format");
         }
-     }
+     }*/
   });
 
   socket.on('end', () => {
@@ -188,7 +188,7 @@ async function updateIOTStatus(input, remoteAddress, remotePort) {
   const BookingsRef = await db.pool.query(`UPDATE public."Bookings" SET "PowerConsumed" = '${powerConsumed}' WHERE "ChargerId"= ${chargerId}`)
   */
 
-  if(input == 'IOTID:1') {
+  /*if(input == 'IOTID:1') {
     iotDataCount = 0;
   } else {
     //const withoutFirstAndLast = input.slice(1, -1);
@@ -198,15 +198,19 @@ async function updateIOTStatus(input, remoteAddress, remotePort) {
     //const iotDataCount = split_string.length;
     //console.log(`iot Data Count->${iotDataCount}`)
     iotDataCount = 1;
-  }
+  }*/
 
 try {
   
   //if(iotDataCount == 23 || iotDataCount == 34) {
-    if(iotDataCount == 1) {
+    /*if(iotDataCount == 1) {*/
+
+    const withoutFirstAndLast = input.slice(1, -1);
+    const split_string = withoutFirstAndLast.split(",");
+    const IoTID = split_string[0];
 
       const data = new IoTModel({
-        IOTID: '1',
+        IOTID: IoTID,
         data: input,
         remoteAddress: remoteAddress,
         remotePort: remotePort
@@ -217,9 +221,9 @@ try {
       const dataToSave = await data.save();
       console.log(dataToSave)
       console.log('Success')
-  } else {
+  /*} else {
     console.log(input)
-  }
+  }*/
 }
 catch (error) {
     console.log(error)
